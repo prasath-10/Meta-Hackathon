@@ -1,0 +1,30 @@
+name: incident-response-env
+description: AI environment for incident diagnosis and recovery
+version: 1.0
+
+observation_space:
+  type: object
+  properties:
+    alerts:
+      type: array
+      items: { type: string }
+    cpu:
+      type: integer
+    memory:
+      type: integer
+    logs:
+      type: string
+    service_status:
+      type: string
+
+action_space:
+  type: object
+  properties:
+    action:
+      type: string
+
+reward:
+  type: float
+
+tasks:
+  - easy

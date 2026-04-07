@@ -1,20 +1,27 @@
+---
+title: incident-response-openenv
+emoji: 🚑
+colorFrom: blue
+colorTo: red
+sdk: docker
+pinned: false
+---
+
 # Incident Response OpenEnv
 
 A simple OpenEnv-compatible environment for AI-driven incident diagnosis and recovery.
 
-## Overview
-This project simulates a production incident where an agent observes alerts, logs, CPU, memory, and service status, then takes actions to resolve the issue.
-
 ## Endpoints
-- `POST /reset`
-- `POST /step`
-- `GET /state`
+- POST /reset
+- POST /step
+- GET /state
 
 ## Task
-- `easy`: service down incident
+- easy: service_down incident
 
-## Example Action
-```json
-{
-  "action": "restart_service"
-}
+## Run locally
+uvicorn server.main:app --reload
+
+## Run with Docker
+docker build -t incident-response-openv .
+docker run -p 7860:7860 incident-response-openv

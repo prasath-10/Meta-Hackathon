@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Body
 from server.environment import IncidentEnv
 from server.models import Action
 
@@ -10,7 +10,8 @@ def root():
     return {"message": "Incident Response OpenEnv is running"}
 
 @app.post("/reset")
-def reset(task_name: str = Query(default="easy")):
+def reset(payload: dict = Body(default={})):
+    task_name = payload.get("task_name", "easy")
     obs = env.reset(task_name=task_name)
     return {
         "observation": obs,

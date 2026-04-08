@@ -9,8 +9,18 @@ env = IncidentEnv()
 def root():
     return {"message": "Incident Response OpenEnv is running"}
 
+from fastapi import Request
+
 @app.post("/reset")
-def reset(payload: dict = Body(default={})):
+async def reset(request: Request):
+    try:
+        payload = await request.json()
+    except Exception:
+        payload = {}
+    
+    if not isinstance(payload, dict):
+        payload = {}
+        
     task_name = payload.get("task_name", "easy")
     obs = env.reset(task_name=task_name)
     return {

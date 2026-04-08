@@ -1,19 +1,31 @@
 from server.models import Observation, Action
+from server.tasks import get_easy_task
 
 
 class IncidentEnv:
     def __init__(self):
         self.state = None
 
-    def reset(self):
-        self.state = {
-            "root_cause": "service_down",
-            "cpu": 20,
-            "memory": 30,
-            "logs": "Service crashed",
-            "service_status": "down",
-            "resolved": False
-        }
+    def reset(self, task_name="easy"):
+        if task_name == "easy":
+            task_data = get_easy_task()
+            self.state = {
+                "root_cause": task_data["root_cause"],
+                "cpu": task_data["initial_state"]["cpu"],
+                "memory": task_data["initial_state"]["memory"],
+                "logs": task_data["initial_state"]["logs"],
+                "service_status": task_data["initial_state"]["service_status"],
+                "resolved": False
+            }
+        else:
+            self.state = {
+                "root_cause": "unknown",
+                "cpu": 50,
+                "memory": 50,
+                "logs": "Unknown issue",
+                "service_status": "unknown",
+                "resolved": False
+            }
 
         return Observation(
             alerts=["service_down"],
